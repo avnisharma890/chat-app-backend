@@ -1,7 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-// const cookie = require('cookie-parser');
 
 // register user
 const register = async (req, res) => {
@@ -16,7 +15,7 @@ const register = async (req, res) => {
     } = req.body;
 
     // check if all fields exist
-    if (!fullname || !username || !password || !confirmPassword || !gender) {
+    if (!fullname || !username || !password || !gender) {
       return res.status(400).json({
         message: `All fields are required`,
       });
@@ -62,7 +61,7 @@ const register = async (req, res) => {
     if (newUser) {
       res.status(200).send({
         success: true,
-        message: "User created successfully",
+        message: "Account created successfully",
       });
     } else {
       res.status(404).send({
@@ -122,11 +121,13 @@ const login = async (req, res) => {
       })
       .json({
         success: true,
-        _id: currentUser._id,
-        username: currentUser.username,
-        fullname: currentUser.fullname,
-        profilePhoto: currentUser.profilePhoto,
-        accessToken,
+        message: 'User logged in successfully',
+        user: {
+          _id: currentUser._id,
+          username: currentUser.username,
+          fullname: currentUser.fullname,
+          profilePhoto: currentUser.profilePhoto,
+    }
       });
   } catch (e) {
     console.log(e);
@@ -137,15 +138,28 @@ const login = async (req, res) => {
   }
 };
 
-const logout = (req,res) => {
-    try {
-        return res.status(200).cookie("accessToken","", {maxAge:0}).json({
-            success: true,
-            message: "Logged out successfully."
-        })
-    } catch (error) {
-        console.log(error);
-    }
-}
+// logout
+const logout = (req, res) => {
+  try {
+    return res.status(200).cookie("accessToken", "", { maxAge: 0 }).json({
+      success: true,
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-module.exports = { register, login, logout };
+const getOtherUsers = async (req, res) => {
+  try {
+    const loggedInUser = req.id;
+    const otherUsers = await User.find({ _id: { $ne: loggedInUser } }).select(
+      "-password"
+    );
+    return res.status(200).json(otherUsers);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { register, login, logout, getOtherUsers };
