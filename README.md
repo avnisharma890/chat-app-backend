@@ -1,4 +1,6 @@
-## frontend: https://github.com/avnisharma890/chat-app-frontend
+<img width="1920" height="874" alt="image" src="https://github.com/user-attachments/assets/464c8597-4b6c-41e8-a5bf-8c91b8e5bae1" /><img width="1920" height="874" alt="image" src="https://github.com/user-attachments/assets/b4e7647d-ad03-4dae-a789-3744d56e2159" />## FRONTEND: https://github.com/avnisharma890/chat-app-frontend
+
+![Uploading image.png…]()
 
 
 # Chat App Backend
